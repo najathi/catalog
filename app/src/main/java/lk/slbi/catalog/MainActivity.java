@@ -32,6 +32,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     RequestQueue requestQueue;
     private String host;
     private String domain;
+    private Intent appLinkIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                                 appAPI.put("editAddress", routes.getString("edit-address"));
 
                                 host = appAPI.get("hostName");
-                                domain = appAPI.get("protocol")+host+"/";
+                                domain = appAPI.get("protocol") + host + "/";
 
                                 webView = findViewById(R.id.webView);
                                 progressBar = findViewById(R.id.progressBar);
@@ -121,7 +124,20 @@ public class MainActivity extends AppCompatActivity {
 
                                 if (VERSION_NAME.equals(appAPI.get("versionName"))) {
 
-                                    webView.loadUrl(domain);
+                                    // ATTENTION: This was auto-generated to handle app links.
+                                    appLinkIntent = getIntent();
+
+                                    if (appLinkIntent.getDataString() != null) {
+                                        Uri appLinkData = appLinkIntent.getData();
+                                        String browserUrl = appAPI.get("protocol")+appLinkData.getHost()+appLinkData.getPath();
+                                        webView.loadUrl(browserUrl);
+
+                                    } else {
+                                        webView.loadUrl(domain);
+
+                                    }
+
+
                                     //Only Open Own Domain in WebView. Other Links will open in other apps
                                     webView.setWebViewClient(new WebViewClient() {
                                         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -200,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
             // Adds the JSON object request "obreq" to the request queue
             requestQueue.add(obreq);
         }
+
     }
 
     @Override
@@ -238,7 +255,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
         } else {
-            exitApp();
+            if (appLinkIntent.getDataString() != null) {
+                webView.loadUrl(domain);
+            } else {
+                exitApp();
+            }
         }
     }
 
