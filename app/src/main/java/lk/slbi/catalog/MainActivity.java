@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -149,6 +150,24 @@ public class MainActivity extends AppCompatActivity {
                                         }
 
                                         @Override
+                                        public void onPageFinished(WebView view, String url) {
+                                            super.onPageFinished(view, url);
+                                            if (!webView.getUrl().equals(domain)) {
+                                                String backLinkUrl = onBackLinkPressed();
+                                                webView.loadUrl("javascript:(function() { " +
+                                                        "$(\".active-mobile i\").removeClass(\"icon-menu icons\");"+
+                                                        "$(\".active-mobile i\").addClass(\"fa fa-arrow-left\");"+
+                                                        "$(\".active-mobile i\").addClass(\"fa fa-arrow-left\");"+
+                                                        "$(\".active-mobile i\").attr(\"id\",\"androidBackButton\");"+
+                                                        "$(\".active-mobile a:first-child\").attr(\"href\", \""+backLinkUrl+"\");"+
+                                                        "})()");
+
+
+
+                                            }
+                                        }
+
+                                        @Override
                                         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                                             super.onReceivedError(view, request, error);
                                             webView.setVisibility(WebView.GONE);
@@ -228,11 +247,11 @@ public class MainActivity extends AppCompatActivity {
             } else if (currentUrl.equals(domain+appAPI.get("myAccount"))) {
                 webView.loadUrl(domain);
             } else if (currentUrl.equals(domain+appAPI.get("orders"))) {
-                webView.loadUrl(domain+appAPI.get("myAccount"));
+                webView.loadUrl(domain);
             } else if (currentUrl.equals(domain+appAPI.get("editAccount"))) {
-                webView.loadUrl(domain+appAPI.get("myAccount"));
+                webView.loadUrl(domain);
             } else if (currentUrl.equals(domain+appAPI.get("editAddress"))) {
-                webView.loadUrl(domain+appAPI.get("myAccount"));
+                webView.loadUrl(domain);
             } else if (currentUrl.equals(domain)) {
                 exitApp();
             } else {
@@ -335,6 +354,43 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .setCancelable(false)
                 .show();
+    }
+
+    public String onBackLinkPressed() {
+        String currentUrl = webView.getUrl();
+        if (currentUrl.equals(domain+appAPI.get("cart"))) {
+            return domain;
+        } else if (currentUrl.equals(domain+appAPI.get("checkout"))) {
+            return domain+appAPI.get("cart");
+        } else if (currentUrl.equals(domain+appAPI.get("myAccount"))) {
+            return domain;
+        } else if (currentUrl.equals(domain+appAPI.get("orders"))) {
+            return domain;
+        } else if (currentUrl.equals(domain+appAPI.get("editAccount"))) {
+            return domain;
+        } else if (currentUrl.equals(domain+appAPI.get("editAddress"))) {
+            return domain;
+        }  else {
+            if (currentUrl.contains(domain+appAPI.get("productCategory"))) {
+                return domain;
+            } else if (currentUrl.contains(domain+appAPI.get("product"))) {
+                String historyUrl="";
+                WebBackForwardList mWebBackForwardList = webView.copyBackForwardList();
+                if (mWebBackForwardList.getCurrentIndex() > 0)
+                    historyUrl = mWebBackForwardList.getItemAtIndex(mWebBackForwardList.getCurrentIndex()-1).getUrl();
+                return historyUrl;
+
+            }  else if ((currentUrl.contains(domain+appAPI.get("orderReceived"))) || (currentUrl.contains(domain+appAPI.get("viewOrder")))) {
+                return domain+appAPI.get("orders");
+            } else if (currentUrl.contains(domain+appAPI.get("editAddress"))) {
+                return domain+appAPI.get("editAddress");
+            } else if (currentUrl.contains(domain+appAPI.get("myAccount"))) {
+                return domain+appAPI.get("myAccount");
+            } else {
+
+                return domain;
+            }
+        }
     }
 
 }
