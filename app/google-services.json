@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1076691445842",
+    "firebase_url": "https://slbi-online-shopping-app.firebaseio.com",
+    "project_id": "slbi-online-shopping-app",
+    "storage_bucket": "slbi-online-shopping-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1076691445842:android:618b32926d657f2c4f978b",
+        "android_client_info": {
+          "package_name": "lk.slbi.catalog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1076691445842-hn56ijtgnuku3krin7egd1thikt9jf0v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "lk.slbi.catalog",
+            "certificate_hash": "b734338c09b4ec46ec6d5f05b37466973f03b2e7"
+          }
+        },
+        {
+          "client_id": "1076691445842-p8ijhk1soljnhak2dbk86u872bmfto5m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATlsRZvZey3b3x4UafUVYPDMNlqQxXYLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1076691445842-p8ijhk1soljnhak2dbk86u872bmfto5m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
