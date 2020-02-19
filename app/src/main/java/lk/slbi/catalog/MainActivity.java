@@ -298,10 +298,8 @@ public class MainActivity extends AppCompatActivity {
     private void versionUpdate() {
         progressBar.setVisibility(ProgressBar.GONE);
         new AlertDialog.Builder(context)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("New Version Available!")
-                .setMessage("You should update SLBI Online Shopping App for continuous using.")
-                .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+                .setMessage("New Version Available! Update SLBI Online Shopping App for Continuous Shopping.")
+                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
@@ -322,9 +320,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void exitApp() {
         new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Exit")
-                .setMessage("Do you want to exit?")
+                .setMessage("Are you sure you want to close app?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -343,10 +339,8 @@ public class MainActivity extends AppCompatActivity {
     private void websiteNotWork() {
 
         new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Maintenace Mode!")
                 .setMessage("We're doing scheduled maintenance in our app. Please try again in few minutes."+"\n\nThank You!")
-                .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
