@@ -62,9 +62,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d("TOken ",""+ FirebaseInstanceId.getInstance().getToken());
         FirebaseMessaging.getInstance().subscribeToTopic("allDevices");
 
-        String url = "http://catalog.slbi.lk";
-
-
         Log.d("Context", this.getBaseContext().toString());
 
         if (!isConnected()) {
@@ -143,8 +140,8 @@ public class MainActivity extends AppCompatActivity {
                                         String browserUrl = appAPI.get("protocol") + appLinkData.getHost() + appLinkData.getPath();
                                         webView.loadUrl(browserUrl);
 
-                                    } else if (getIntent().hasExtra("notification_url")) {
-                                        webView.loadUrl(getIntent().getStringExtra("notification_url"));
+                                    } else if (appLinkIntent.hasExtra("notification_url")) {
+                                        webView.loadUrl(appLinkIntent.getStringExtra("notification_url"));
                                     }else {
                                         webView.loadUrl(domain);
 
@@ -286,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         } else {
-            if (appLinkIntent.getDataString() != null) {
+            if (appLinkIntent.getDataString() != null || appLinkIntent.hasExtra("notification_url")) {
                 webView.loadUrl(domain);
             } else {
                 exitApp();
@@ -384,8 +381,11 @@ public class MainActivity extends AppCompatActivity {
             } else if (currentUrl.contains(domain+appAPI.get("product"))) {
                 String historyUrl="";
                 WebBackForwardList mWebBackForwardList = webView.copyBackForwardList();
-                if (mWebBackForwardList.getCurrentIndex() > 0)
-                    historyUrl = mWebBackForwardList.getItemAtIndex(mWebBackForwardList.getCurrentIndex()-1).getUrl();
+                if (mWebBackForwardList.getCurrentIndex() > 0) {
+                    historyUrl = mWebBackForwardList.getItemAtIndex(mWebBackForwardList.getCurrentIndex() - 1).getUrl();
+                } else {
+                    historyUrl = domain;
+                }
                 return historyUrl;
 
             }  else if ((currentUrl.contains(domain+appAPI.get("orderReceived"))) || (currentUrl.contains(domain+appAPI.get("viewOrder")))) {
