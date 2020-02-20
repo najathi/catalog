@@ -1,5 +1,6 @@
 package lk.slbi.catalog.fcm;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -55,7 +56,9 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
                 .setAutoCancel(true)
                 .setVibrate(new long[]{1000,1000,1000,1000,1000})
                 .setOnlyAlertOnce(true)
-                .setContentIntent(pendingIntent);
+                .setContentIntent(pendingIntent)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
 
         if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.JELLY_BEAN){
             builder=builder.setContent(getCustomDesign(title,message));
@@ -70,6 +73,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
             NotificationChannel notificationChannel=new NotificationChannel(channel_id,"web_app",NotificationManager.IMPORTANCE_HIGH);
             notificationChannel.setSound(uri,null);
+            notificationChannel.setDescription("slbi");
             notificationManager.createNotificationChannel(notificationChannel);
         }
 
