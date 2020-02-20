@@ -2,6 +2,7 @@ package lk.slbi.catalog;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,7 +30,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
@@ -37,9 +37,11 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import lk.slbi.catalog.fcm.FirebaseMessageReceiver;
 
 public class MainActivity extends AppCompatActivity {
+    public static Activity activity;
+    public static Boolean isActivityActive = false;
+
     private WebView webView;
     private ProgressBar progressBar;
     // URL of object to be parsed
@@ -57,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        activity = this;
 
         //for sending to all device using own server code subscribe your app to one topic
-        Log.d("TOken ",""+ FirebaseInstanceId.getInstance().getToken());
         FirebaseMessaging.getInstance().subscribeToTopic("allDevices");
 
         Log.d("Context", this.getBaseContext().toString());
@@ -248,6 +250,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        isActivityActive = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isActivityActive = false;
+    }
+
+    @Override
     public void onBackPressed() {
         if (webView.canGoBack()) {
             String currentUrl = webView.getUrl();
@@ -379,7 +393,7 @@ public class MainActivity extends AppCompatActivity {
             if (currentUrl.contains(domain+appAPI.get("productCategory"))) {
                 return domain;
             } else if (currentUrl.contains(domain+appAPI.get("product"))) {
-                String historyUrl="";
+                String historyUrl;
                 WebBackForwardList mWebBackForwardList = webView.copyBackForwardList();
                 if (mWebBackForwardList.getCurrentIndex() > 0) {
                     historyUrl = mWebBackForwardList.getItemAtIndex(mWebBackForwardList.getCurrentIndex() - 1).getUrl();

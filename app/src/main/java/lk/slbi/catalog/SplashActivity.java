@@ -41,6 +41,9 @@ public class SplashActivity extends AppCompatActivity {
                 if (getIntent().hasExtra("url")) {
                     intent.putExtra("notification_url", getIntent().getStringExtra("url"));
                 }
+                if (MainActivity.isActivityActive) {
+                    MainActivity.activity.finish();
+                }
                 startActivity(intent);
                 finish();
             }
