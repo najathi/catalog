@@ -37,6 +37,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import lk.slbi.catalog.fcm.FirebaseMessageReceiver;
+
 public class MainActivity extends AppCompatActivity {
     private WebView webView;
     private ProgressBar progressBar;
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseMessaging.getInstance().subscribeToTopic("allDevices");
 
         String url = "http://catalog.slbi.lk";
+
 
         Log.d("Context", this.getBaseContext().toString());
 
@@ -137,10 +140,12 @@ public class MainActivity extends AppCompatActivity {
 
                                     if (appLinkIntent.getDataString() != null) {
                                         Uri appLinkData = appLinkIntent.getData();
-                                        String browserUrl = appAPI.get("protocol")+appLinkData.getHost()+appLinkData.getPath();
+                                        String browserUrl = appAPI.get("protocol") + appLinkData.getHost() + appLinkData.getPath();
                                         webView.loadUrl(browserUrl);
 
-                                    } else {
+                                    } else if (getIntent().hasExtra("notification_url")) {
+                                        webView.loadUrl(getIntent().getStringExtra("notification_url"));
+                                    }else {
                                         webView.loadUrl(domain);
 
                                     }

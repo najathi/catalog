@@ -37,7 +37,11 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                if (getIntent().hasExtra("url")) {
+                    intent.putExtra("notification_url", getIntent().getStringExtra("url"));
+                }
+                startActivity(intent);
                 finish();
             }
 
